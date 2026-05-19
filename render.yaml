@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: 7qcloak
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: NOTIFY_GROUP_ID
+        sync: false
+      - key: PROXYCHECK_API_KEY
+        sync: false
+      - key: IPINFO_API_TOKEN
+        sync: false
+      - key: DATABASE_URL
+        value: sqlite:///cloak.db
+      - key: FLASK_HOST
+        value: 0.0.0.0
+      - key: FLASK_PORT
+        value: "10000"

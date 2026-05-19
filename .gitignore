@@ -1,0 +1,22 @@
+# Secrets
+.env
+
+# Database
+*.db
+*.sqlite3
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Old files (replaced by new structure)
+bot.py
+db.py
+configbot.py

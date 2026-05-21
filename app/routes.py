@@ -11,7 +11,7 @@ import logging
 import os
 from flask import Flask, redirect, request, abort, send_file
 
-from db.models import link_get_domain
+from db.models import link_get_flow
 from core.flow_engine import evaluate
 from bot.handlers.notify import send_visit_notification
 
@@ -35,21 +35,20 @@ def set_bot(bot, loop: asyncio.AbstractEventLoop):
 
 @flask_app.route("/go/<token>")
 def go(token: str):
-    domain = link_get_domain(token)
-    if not domain:
+    flow_name, domain = link_get_flow(token)
+    if not flow_name:
         abort(404)
 
-    ip = request.headers.get("X-Forwarded-For", request.remote_addr)
-    ip = ip.split(",")[0].strip()
+    ip         = request.headers.get("X-Forwarded-For", request.remote_addr)
+    ip         = ip.split(",")[0].strip()
     user_agent = request.headers.get("User-Agent", "")
 
     result = evaluate(domain, token, ip, user_agent)
 
-    # Schedule notification on the bot's running event loop (thread-safe)
     if _bot is not None and _bot_loop is not None and _bot_loop.is_running():
         asyncio.run_coroutine_threadsafe(
             send_visit_notification(
-                _bot, domain, result.action, ip, result.ip_info,
+                _bot, flow_name, result.action, ip, result.ip_info,
                 result.proxy, result.device_type, result.os,
             ),
             _bot_loop,

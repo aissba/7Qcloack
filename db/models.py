@@ -1,6 +1,10 @@
 """
 Single source of truth for all database tables.
 Uses raw SQLite via a thread-safe connection helper.
+
+Primary concept: a "Flow" is a named cloak campaign unit.
+  flow_name  → human name  (e.g. "parkside-fr", "amazon-us")
+  domain     → the actual domain visitors hit
 """
 import sqlite3
 import secrets
@@ -8,7 +12,6 @@ import string
 from contextlib import contextmanager
 from config import DATABASE_URL
 
-# Strip "sqlite:///" prefix if present
 _DB_PATH = DATABASE_URL.replace("sqlite:///", "")
 
 
@@ -24,162 +27,172 @@ def get_conn():
 
 
 def _migrate(c):
-    """Add new columns to existing databases without breaking fresh installs."""
-    existing = {row[1] for row in c.execute("PRAGMA table_info(domains)")}
-    if "device_filter" not in existing:
-        c.execute("ALTER TABLE domains ADD COLUMN device_filter TEXT DEFAULT 'all'")
+    """Safe column additions for existing databases."""
+    existing = {row[1] for row in c.execute("PRAGMA table_info(flows)")}
+    migrations = {
+        "device_filter": "TEXT DEFAULT 'all'",
+    }
+    for col, definition in migrations.items():
+        if col not in existing:
+            c.execute(f"ALTER TABLE flows ADD COLUMN {col} {definition}")
 
 
 def init_db():
     with get_conn() as c:
         c.executescript("""
-            CREATE TABLE IF NOT EXISTS domains (
-                domain          TEXT PRIMARY KEY,
-                safe_url        TEXT,
-                money_url       TEXT,
+            CREATE TABLE IF NOT EXISTS flows (
+                flow_name       TEXT PRIMARY KEY,
+                domain          TEXT    NOT NULL DEFAULT '',
+                safe_url        TEXT    DEFAULT '',
+                money_url       TEXT    DEFAULT '',
                 countries       TEXT    DEFAULT '',
-                threshold       INTEGER DEFAULT 75,
+                threshold       INTEGER DEFAULT 20000,
                 blocked_isps    TEXT    DEFAULT '',
+                device_filter   TEXT    DEFAULT 'all',
                 notify_group    TEXT    DEFAULT '',
                 notify_enabled  INTEGER DEFAULT 0,
                 notify_level    TEXT    DEFAULT 'all',
-                device_filter   TEXT    DEFAULT 'all',
                 created_at      DATETIME DEFAULT CURRENT_TIMESTAMP
             );
 
-
             CREATE TABLE IF NOT EXISTS links (
                 token       TEXT PRIMARY KEY,
+                flow_name   TEXT    NOT NULL,
                 domain      TEXT    NOT NULL,
                 active      INTEGER DEFAULT 1,
                 created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY(domain) REFERENCES domains(domain) ON DELETE CASCADE
+                FOREIGN KEY(flow_name) REFERENCES flows(flow_name) ON DELETE CASCADE
             );
 
             CREATE TABLE IF NOT EXISTS visits (
-                id          INTEGER PRIMARY KEY AUTOINCREMENT,
-                domain      TEXT,
-                token       TEXT,
-                ip          TEXT,
-                country     TEXT,
+                id           INTEGER PRIMARY KEY AUTOINCREMENT,
+                flow_name    TEXT,
+                domain       TEXT,
+                token        TEXT,
+                ip           TEXT,
+                country      TEXT,
                 country_code TEXT,
-                isp         TEXT,
-                action      TEXT,
-                proxy       INTEGER DEFAULT 0,
-                device_type TEXT    DEFAULT '',
-                os          TEXT    DEFAULT '',
-                created_at  DATETIME DEFAULT CURRENT_TIMESTAMP
+                isp          TEXT,
+                action       TEXT,
+                proxy        INTEGER DEFAULT 0,
+                device_type  TEXT    DEFAULT '',
+                os           TEXT    DEFAULT '',
+                created_at   DATETIME DEFAULT CURRENT_TIMESTAMP
             );
         """)
         _migrate(c)
 
 
-# ── Token helpers (used by domain_manager) ────────────────────────────────────
+# ── Token helper ──────────────────────────────────────────────────────────────
 
 def _make_token(n: int = 8) -> str:
-    alphabet = string.ascii_lowercase + string.digits
-    return "".join(secrets.choice(alphabet) for _ in range(n))
+    return "".join(secrets.choice(string.ascii_lowercase + string.digits) for _ in range(n))
 
 
-# ── Domain CRUD ───────────────────────────────────────────────────────────────
+# ── Flow CRUD ─────────────────────────────────────────────────────────────────
 
-def domain_add(domain: str) -> bool:
+def flow_add(flow_name: str) -> bool:
     from config import DEFAULT_BLOCKED_ISPS
     default_isps = "|".join(DEFAULT_BLOCKED_ISPS)
     try:
         with get_conn() as c:
             c.execute(
-                "INSERT INTO domains (domain, blocked_isps) VALUES (?, ?)",
-                (domain, default_isps),
+                "INSERT INTO flows (flow_name, blocked_isps) VALUES (?, ?)",
+                (flow_name, default_isps),
             )
         return True
     except sqlite3.IntegrityError:
         return False
 
 
-def domain_remove(domain: str) -> bool:
+def flow_remove(flow_name: str) -> bool:
     with get_conn() as c:
-        cur = c.execute("DELETE FROM domains WHERE domain = ?", (domain,))
+        cur = c.execute("DELETE FROM flows WHERE flow_name = ?", (flow_name,))
         return cur.rowcount > 0
 
 
-def domain_list():
+def flow_list():
     with get_conn() as c:
-        return c.execute("SELECT * FROM domains ORDER BY domain").fetchall()
+        return c.execute("SELECT * FROM flows ORDER BY flow_name").fetchall()
 
 
-def domain_get(domain: str):
+def flow_get(flow_name: str):
     with get_conn() as c:
-        return c.execute("SELECT * FROM domains WHERE domain = ?", (domain,)).fetchone()
+        return c.execute("SELECT * FROM flows WHERE flow_name = ?", (flow_name,)).fetchone()
 
 
-def domain_update(domain: str, **fields) -> bool:
+def flow_get_by_domain(domain: str):
+    with get_conn() as c:
+        return c.execute("SELECT * FROM flows WHERE domain = ?", (domain,)).fetchone()
+
+
+def flow_update(flow_name: str, **fields) -> bool:
     if not fields:
         return False
     cols = ", ".join(f"{k} = ?" for k in fields)
-    vals = list(fields.values()) + [domain]
+    vals = list(fields.values()) + [flow_name]
     with get_conn() as c:
-        cur = c.execute(f"UPDATE domains SET {cols} WHERE domain = ?", vals)
+        cur = c.execute(f"UPDATE flows SET {cols} WHERE flow_name = ?", vals)
         return cur.rowcount > 0
 
 
 # ── Links CRUD ────────────────────────────────────────────────────────────────
 
-def link_create(domain: str) -> str:
+def link_create(flow_name: str, domain: str) -> str:
     token = _make_token()
     with get_conn() as c:
-        c.execute("INSERT INTO links (token, domain) VALUES (?, ?)", (token, domain))
+        c.execute(
+            "INSERT INTO links (token, flow_name, domain) VALUES (?, ?, ?)",
+            (token, flow_name, domain),
+        )
     return token
 
 
-def link_revoke_all(domain: str):
+def link_revoke_all(flow_name: str):
     with get_conn() as c:
-        c.execute("UPDATE links SET active = 0 WHERE domain = ?", (domain,))
+        c.execute("UPDATE links SET active = 0 WHERE flow_name = ?", (flow_name,))
 
 
-def link_list(domain: str):
+def link_list(flow_name: str):
     with get_conn() as c:
         return c.execute(
-            "SELECT token, created_at FROM links WHERE domain = ? AND active = 1 ORDER BY created_at DESC",
-            (domain,),
+            "SELECT token, domain, created_at FROM links WHERE flow_name = ? AND active = 1 ORDER BY created_at DESC",
+            (flow_name,),
         ).fetchall()
 
 
-def link_get_domain(token: str):
+def link_get_flow(token: str):
+    """Returns (flow_name, domain) tuple or (None, None)."""
     with get_conn() as c:
         row = c.execute(
-            "SELECT domain FROM links WHERE token = ? AND active = 1", (token,)
+            "SELECT flow_name, domain FROM links WHERE token = ? AND active = 1", (token,)
         ).fetchone()
-        return row["domain"] if row else None
+        return (row["flow_name"], row["domain"]) if row else (None, None)
 
 
 # ── Visits ────────────────────────────────────────────────────────────────────
 
-def visit_log(domain, token, ip, country, country_code, isp, action, proxy=0, device_type="", os=""):
+def visit_log(flow_name, domain, token, ip, country, country_code, isp, action, proxy=0, device_type="", os=""):
     with get_conn() as c:
         c.execute(
             """INSERT INTO visits
-               (domain, token, ip, country, country_code, isp, action, proxy, device_type, os)
-               VALUES (?,?,?,?,?,?,?,?,?,?)""",
-            (domain, token, ip, country, country_code, isp, action, int(proxy), device_type, os),
+               (flow_name, domain, token, ip, country, country_code, isp, action, proxy, device_type, os)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+            (flow_name, domain, token, ip, country, country_code, isp, action, int(proxy), device_type, os),
         )
 
 
-def visit_logs(domain: str, limit: int = 20):
+def visit_logs(flow_name: str, limit: int = 20):
     with get_conn() as c:
         return c.execute(
-            "SELECT * FROM visits WHERE domain = ? ORDER BY created_at DESC LIMIT ?",
-            (domain, limit),
+            "SELECT * FROM visits WHERE flow_name = ? ORDER BY created_at DESC LIMIT ?",
+            (flow_name, limit),
         ).fetchall()
 
 
-def visit_stats(domain: str) -> dict:
+def visit_stats(flow_name: str) -> dict:
     with get_conn() as c:
-        total = c.execute("SELECT COUNT(*) FROM visits WHERE domain = ?", (domain,)).fetchone()[0]
-        money = c.execute(
-            "SELECT COUNT(*) FROM visits WHERE domain = ? AND action = 'money'", (domain,)
-        ).fetchone()[0]
-        safe = c.execute(
-            "SELECT COUNT(*) FROM visits WHERE domain = ? AND action = 'safe'", (domain,)
-        ).fetchone()[0]
+        total = c.execute("SELECT COUNT(*) FROM visits WHERE flow_name = ?", (flow_name,)).fetchone()[0]
+        money = c.execute("SELECT COUNT(*) FROM visits WHERE flow_name = ? AND action = 'money'", (flow_name,)).fetchone()[0]
+        safe  = c.execute("SELECT COUNT(*) FROM visits WHERE flow_name = ? AND action = 'safe'",  (flow_name,)).fetchone()[0]
     return {"total": total, "money": money, "safe": safe}

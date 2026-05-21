@@ -43,7 +43,7 @@ def go(token: str):
     ip         = ip.split(",")[0].strip()
     user_agent = request.headers.get("User-Agent", "")
 
-    result = evaluate(domain, token, ip, user_agent)
+    result = evaluate(flow_name, domain, token, ip, user_agent)
 
     if _bot is not None and _bot_loop is not None and _bot_loop.is_running():
         asyncio.run_coroutine_threadsafe(

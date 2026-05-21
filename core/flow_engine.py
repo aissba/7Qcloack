@@ -11,7 +11,7 @@ Decision order:
 """
 from core import ipgeo, proxycheck
 from core.useragent import parse as parse_ua, is_allowed as device_allowed
-from db.models import flow_get_by_domain, visit_log
+from db.models import flow_get, visit_log
 
 
 class FlowResult:
@@ -27,12 +27,12 @@ class FlowResult:
         self.flow_name    = flow_name
 
 
-def evaluate(domain: str, token: str, ip: str, user_agent: str = "") -> FlowResult:
-    row = flow_get_by_domain(domain)
+def evaluate(flow_name: str, domain: str, token: str, ip: str, user_agent: str = "") -> FlowResult:
+    # Always look up by flow_name so updates to money_url/device_filter are live immediately
+    row = flow_get(flow_name)
     if not row:
         return FlowResult("safe", "", {}, False)
 
-    flow_name = row["flow_name"]
     safe_url  = row["safe_url"]  or ""
     money_url = row["money_url"] or safe_url
 

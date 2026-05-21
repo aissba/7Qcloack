@@ -93,10 +93,10 @@ async def cmd_previewflow(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(str(e), parse_mode="Markdown")
         return
 
-    domain    = row["domain"] or "_(not set)_"
-    safe      = row["safe_url"]   or "_(safe_page.html served locally)_"
-    money     = row["money_url"]  or "_(not set)_"
-    countries = row["countries"]  or "_(all)_"
+    domain    = row["domain"]        or "(not set)"
+    safe      = row["safe_url"]      or "(safe_page.html — local)"
+    money     = row["money_url"]     or "(not set)"
+    countries = row["countries"]     or "(all)"
     device    = row["device_filter"] or "all"
     threshold = row["threshold"]
     created   = row["created_at"][:16] if row["created_at"] else "?"
@@ -105,26 +105,26 @@ async def cmd_previewflow(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if tokens and row["domain"]:
         t_url = token_url(row["domain"], tokens[0]["token"])
     else:
-        t_url = "_(no token yet — use /generate)_"
+        t_url = "(no token yet — use /generate)"
 
     is_active = bool(row["domain"] and row["money_url"] and tokens)
-    status = "✅ Active" if is_active else "⚠️  Incomplete setup"
+    status = "✅ Active" if is_active else "⚠️ Incomplete setup"
 
     text = (
         f"━━━━━━━━━━━━━━━━━━━━━━\n"
-        f"🎯 *Flow: {flow_name}*\n"
+        f"🎯 Flow: {flow_name}\n"
         f"━━━━━━━━━━━━━━━━━━━━━━\n"
-        f"Domain    : `{domain}`\n"
+        f"Domain    : {domain}\n"
         f"Safe URL  : {safe}\n"
         f"Money URL : {money}\n"
-        f"Countries : `{countries}`\n"
-        f"Threshold : `{threshold}`\n"
-        f"Device    : `{device}`\n"
-        f"Token URL : `{t_url}`\n"
+        f"Countries : {countries}\n"
+        f"Threshold : {threshold}\n"
+        f"Device    : {device}\n"
+        f"Token URL : {t_url}\n"
         f"Status    : {status}\n"
-        f"Created   : `{created}`"
+        f"Created   : {created}"
     )
-    await update.message.reply_text(text, parse_mode="Markdown")
+    await update.message.reply_text(text)
 
 
 async def cmd_stats(update: Update, ctx: ContextTypes.DEFAULT_TYPE):

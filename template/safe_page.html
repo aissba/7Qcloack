@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Les favoris Parkside reperes chez Lidl</title>
-  <meta name="description" content="Selection advertorial des produits Parkside les plus suivis chez Lidl, avec liens catalogue affiliés.">
+  <title>Sélection Parkside présentée sur Lidl.fr | Advertorial</title>
+  <meta name="description" content="Advertorial présentant une sélection de produits Parkside disponibles via Lidl.fr, avec transparence commerciale et mentions légales.">
   <style>
     :root {
       color-scheme: light;
@@ -51,6 +51,18 @@
       text-align: center;
     }
 
+    .notice strong {
+      color: var(--yellow);
+      text-transform: uppercase;
+    }
+
+    .notice a {
+      margin-left: 12px;
+      color: #fff;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
     .hero {
       min-height: 86vh;
       display: grid;
@@ -90,7 +102,7 @@
 
     h1 {
       margin: 0;
-      font-size: clamp(42px, 8vw, 86px);
+      font-size: 76px;
       line-height: .92;
       letter-spacing: 0;
       max-width: 820px;
@@ -99,7 +111,7 @@
     .lede {
       margin: 22px 0 0;
       max-width: 690px;
-      font-size: clamp(18px, 2.2vw, 24px);
+      font-size: 22px;
       color: rgba(255, 255, 255, 0.9);
     }
 
@@ -147,7 +159,7 @@
 
     h2 {
       margin: 0 0 14px;
-      font-size: clamp(28px, 4vw, 46px);
+      font-size: 42px;
       line-height: 1.03;
     }
 
@@ -338,10 +350,92 @@
       font-size: 12px;
     }
 
+    .compliance {
+      background: #fff;
+      border-top: 1px solid var(--line);
+    }
+
+    .compliance-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .legal-panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+      background: #fff;
+    }
+
+    .legal-panel h3 {
+      font-size: 20px;
+      margin-bottom: 14px;
+    }
+
+    .legal-panel p {
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .legal-data {
+      display: grid;
+      gap: 9px;
+      margin: 0;
+    }
+
+    .legal-data div {
+      display: grid;
+      grid-template-columns: minmax(126px, .42fr) 1fr;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 9px;
+    }
+
+    .legal-data dt {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .legal-data dd {
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .required {
+      border-radius: 4px;
+      background: #fff1bb;
+      color: #44340b;
+      padding: 2px 5px;
+    }
+
+    .policy-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .policy-list strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
     @media (max-width: 900px) {
+      h1 {
+        font-size: 52px;
+      }
+
+      h2 {
+        font-size: 34px;
+      }
+
       .intro-grid,
       .pick-grid,
       .ranked-list,
+      .compliance-grid,
       .footer-grid {
         grid-template-columns: 1fr;
       }
@@ -352,6 +446,18 @@
     }
 
     @media (max-width: 560px) {
+      h1 {
+        font-size: 40px;
+      }
+
+      h2 {
+        font-size: 29px;
+      }
+
+      .lede {
+        font-size: 18px;
+      }
+
       .hero {
         min-height: 82vh;
       }
@@ -368,19 +474,27 @@
         grid-column: 2;
         text-align: center;
       }
+
+      .legal-data div {
+        display: block;
+      }
+
+      .legal-data dd {
+        margin-top: 4px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="notice">Advertorial independant. Les boutons et ressources ci-dessous renvoient uniquement vers des liens catalogue Lidl affiliés.</div>
+  <div class="notice"><strong>Publicité - Advertorial</strong> | Cette page contient des liens commerciaux vers Lidl.fr. <a href="#mentions-legales">Mentions légales</a></div>
 
   <main>
     <header class="hero">
       <div class="hero-inner">
         <div class="hero-copy">
-          <p class="eyebrow">Selection catalogue 2024-2026</p>
-          <h1>Les outils Parkside les plus surveilles chez Lidl</h1>
-          <p class="lede">Perceuse 20 V, nettoyeur haute pression, tondeuse robot, batteries et accessoires: voici les references qui ressortent le plus dans le catalogue best-sellers.</p>
+          <p class="eyebrow">Contenu promotionnel</p>
+          <h1>Sélection Parkside pour l'atelier et le jardin</h1>
+          <p class="lede">Perceuse 20 V, nettoyeur haute pression, tondeuse robot, batteries et accessoires : une présentation commerciale de références accessibles via Lidl.fr.</p>
           <div class="hero-actions">
             <a class="button" href="https://www.lidl.fr/p/parkside-set-perceuse-visseuse-sans-fil-et-accessoires-2-batteries-chargeur-20-v/p100397948" rel="sponsored nofollow">Voir le favori Lidl</a>
             <a class="button secondary" href="https://www.lidl.fr/c/produits-parkside-lidl/a10078032" rel="sponsored nofollow">Explorer la ressource Lidl</a>
@@ -392,28 +506,28 @@
     <section class="intro">
       <div class="section-inner intro-grid">
         <div>
-          <h2>Pourquoi ces references reviennent dans toutes les listes d'achat</h2>
-          <p>Parkside s'est impose comme une gamme pratique pour bricoler, entretenir le jardin et completer un atelier sans multiplier les ecosystemes de batteries. Le catalogue classe ici les produits par demande observee, disponibilite recente et attrait prix.</p>
-          <p>Le bon reflexe: commencer par les outils qui partagent la meme plateforme 20 V, puis ajouter les specialistes qui font gagner du temps, comme le nettoyeur haute pression, la scie sabre ou le taille-haies telescopique.</p>
+          <h2>Une sélection présentée à titre promotionnel</h2>
+          <p>Cette page propose une sélection de références Parkside pour bricoler et entretenir le jardin. Elle est publiée à des fins commerciales et ne constitue pas un classement officiel de Lidl ou de Parkside.</p>
+          <p>Les prix affichés proviennent du catalogue transmis pour la création de cette page. Les disponibilités, prix et conditions applicables sont ceux confirmés sur Lidl.fr au moment de votre visite.</p>
         </div>
-        <aside class="stats" aria-label="Chiffres cles">
-          <div class="stat"><strong>54</strong> entrees catalogue analysees</div>
-          <div class="stat"><strong>48</strong> ressources Lidl exploitables</div>
-          <div class="stat"><strong>20 V</strong> l'ecosysteme batterie le plus represente</div>
+        <aside class="stats" aria-label="Informations de transparence">
+          <div class="stat"><strong>Advertorial</strong> contenu promotionnel identifié</div>
+          <div class="stat"><strong>Prix indicatifs</strong> à vérifier avant achat</div>
+          <div class="stat"><strong>Lidl.fr</strong> destination des liens produits</div>
         </aside>
       </div>
     </section>
 
     <section>
       <div class="section-inner">
-        <h2>Le trio a regarder en premier</h2>
+        <h2>Trois références présentées</h2>
         <div class="pick-grid">
           <article class="product">
             <div class="product-media"><img src="https://i.imgur.com/H2uI6v8.jpeg" alt="Boite a outils Parkside avec visseuse sans fil"></div>
             <div class="product-body">
-              <span class="tag">Bestseller X20V</span>
-              <h3>Boite a outils avec visseuse sans fil</h3>
-              <p>Une base polyvalente pour demarrer ou completer l'atelier, avec une reference 20 V frequemment citee dans le catalogue.</p>
+              <span class="tag">Perceuse 20 V</span>
+              <h3>Boîte à outils avec visseuse sans fil</h3>
+              <p>Une solution polyvalente pour démarrer ou compléter un atelier autour d'une référence 20 V.</p>
               <div class="price">75,99 EUR</div>
               <a class="button" href="https://www.lidl.fr/p/parkside-boite-a-outils-avec-visseuse-sans-fil-pwbm-a1-92-pieces/p100400782" rel="sponsored nofollow">Voir chez Lidl</a>
             </div>
@@ -422,9 +536,9 @@
           <article class="product">
             <div class="product-media"><img src="https://i.imgur.com/zkRpHGO.jpeg" alt="Nettoyeur haute pression Parkside 170 bar"></div>
             <div class="product-body">
-              <span class="tag">Top saisonnier</span>
+              <span class="tag">Nettoyage extérieur</span>
               <h3>Nettoyeur haute pression 170 bar</h3>
-              <p>La reference utile pour terrasses, voiture, mobilier exterieur et gros nettoyages avant les beaux jours.</p>
+              <p>La référence utile pour terrasses, voiture, mobilier extérieur et gros nettoyages avant les beaux jours.</p>
               <div class="price">124 EUR</div>
               <a class="button" href="https://www.lidl.fr/p/parkside-nettoyeur-haute-pression-phd-170-e3-170-bar-2400-w/p100397942" rel="sponsored nofollow">Voir chez Lidl</a>
             </div>
@@ -433,9 +547,9 @@
           <article class="product">
             <div class="product-media"><img src="https://i.imgur.com/KZnvrfu.jpeg" alt="Tondeuse robot Parkside smart"></div>
             <div class="product-body">
-              <span class="tag">Jardin 2024-2026</span>
+              <span class="tag">Entretien du jardin</span>
               <h3>Tondeuse robot smart 1000 m2</h3>
-              <p>Le choix confort pour automatiser l'entretien d'une grande pelouse, classe parmi les plus recherches du jardin.</p>
+              <p>Une option pour automatiser l'entretien d'une pelouse, sous réserve des caractéristiques et conditions indiquées sur la fiche produit.</p>
               <div class="price">429 EUR</div>
               <a class="button" href="https://www.lidl.fr/p/parkside-tondeuse-robot-smart-pamrs-1000-a1-1000-m-20-v/p100395159" rel="sponsored nofollow">Voir chez Lidl</a>
             </div>
@@ -446,21 +560,53 @@
 
     <section class="band">
       <div class="section-inner">
-        <h2>Les 12 raccourcis catalogue</h2>
-        <p>Un acces rapide aux produits qui combinent forte demande, prix affiche et utilite concrete pour l'atelier ou le jardin.</p>
+        <h2>Autres références du catalogue</h2>
+        <p>Un accès rapide à des produits pour l'atelier ou le jardin. Les boutons ouvrent la fiche ou la catégorie Lidl.fr correspondante.</p>
         <div class="ranked-list">
-          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-tronconneuse-sans-fil-paks-20-li-f5-20-v/p100399758" rel="sponsored nofollow"><span class="rank">6</span><span><strong>Tronconneuse sans fil 20 V</strong><span>49,99 EUR - +67% vs catalogue</span></span><span class="mini-button">Lidl</span></a>
-          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-tondeuse-thermique-pbrm-43-b2-800-m-45-l/p100399498" rel="sponsored nofollow"><span class="rank">8</span><span><strong>Tondeuse thermique</strong><span>129 EUR - +223% vs catalogue</span></span><span class="mini-button">Lidl</span></a>
-          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-performance-visseuse-a-chocs-sans-fil-passp-20-li-c4-1356-nm-20-v/p100396832" rel="sponsored nofollow"><span class="rank">10</span><span><strong>Visseuse a chocs 20 V</strong><span>89,99 EUR - top ventes atelier</span></span><span class="mini-button">Lidl</span></a>
-          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-performance-scie-sabre-sans-fil-pssap-20-li-e6-20-v/p100396290" rel="sponsored nofollow"><span class="rank">14</span><span><strong>Scie sabre 20 V</strong><span>49,99 EUR - +150% vs catalogue</span></span><span class="mini-button">Lidl</span></a>
-          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-aspirateur-souffleur-broyeur-electrique-pelsb-2600-a1/p100394586" rel="sponsored nofollow"><span class="rank">16</span><span><strong>Souffleur aspirateur electrique</strong><span>59,99 EUR - +200% vs catalogue</span></span><span class="mini-button">Lidl</span></a>
-          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-performance-debroussailleuse-sans-fil-2-en-1-ppafs-40-li-a1-40-v/p100398639" rel="sponsored nofollow"><span class="rank">17</span><span><strong>Debroussailleuse 40 V</strong><span>79,99 EUR - top jardin 2025</span></span><span class="mini-button">Lidl</span></a>
-          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-taille-haies-telescopique-sans-fil-pthsa-20-li-c4-20-v/p100386058" rel="sponsored nofollow"><span class="rank">20</span><span><strong>Taille-haies telescopique 20 V</strong><span>69,99 EUR - +368% vs catalogue</span></span><span class="mini-button">Lidl</span></a>
-          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-coupe-bordures-sans-fil-chargeur-batterie-20-v/p800012957" rel="sponsored nofollow"><span class="rank">22</span><span><strong>Coupe-bordures 20 V</strong><span>49,99 EUR - +234% vs catalogue</span></span><span class="mini-button">Lidl</span></a>
-          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-aspirateur-injecteur-extracteur-pws-20-f5/p100400138" rel="sponsored nofollow"><span class="rank">25</span><span><strong>Aspirateur injecteur extracteur</strong><span>89,99 EUR - +200% vs catalogue</span></span><span class="mini-button">Lidl</span></a>
-          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-scie-a-onglet-radiale-pzks-2000-c3-2000-w/p100388343" rel="sponsored nofollow"><span class="rank">34</span><span><strong>Scie a onglet radiale 2000 W</strong><span>199,99 EUR - +300% vs catalogue</span></span><span class="mini-button">Lidl</span></a>
-          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-batterie-chargeur-4-ah-20-v/p800011294" rel="sponsored nofollow"><span class="rank">37</span><span><strong>Batterie + chargeur 20 V 4 Ah</strong><span>34,99 EUR - +250% vs catalogue</span></span><span class="mini-button">Lidl</span></a>
-          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-set-de-douilles-216-pieces/p100389184" rel="sponsored nofollow"><span class="rank">43</span><span><strong>Set de douilles 216 pieces</strong><span>34,99 EUR - +134% vs catalogue</span></span><span class="mini-button">Lidl</span></a>
+          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-tronconneuse-sans-fil-paks-20-li-f5-20-v/p100399758" rel="sponsored nofollow"><span class="rank">6</span><span><strong>Tronconneuse sans fil 20 V</strong><span>Prix catalogue transmis: 49,99 EUR</span></span><span class="mini-button">Lidl</span></a>
+          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-tondeuse-thermique-pbrm-43-b2-800-m-45-l/p100399498" rel="sponsored nofollow"><span class="rank">8</span><span><strong>Tondeuse thermique</strong><span>Prix catalogue transmis: 129 EUR</span></span><span class="mini-button">Lidl</span></a>
+          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-performance-visseuse-a-chocs-sans-fil-passp-20-li-c4-1356-nm-20-v/p100396832" rel="sponsored nofollow"><span class="rank">10</span><span><strong>Visseuse a chocs 20 V</strong><span>Prix catalogue transmis: 89,99 EUR</span></span><span class="mini-button">Lidl</span></a>
+          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-performance-scie-sabre-sans-fil-pssap-20-li-e6-20-v/p100396290" rel="sponsored nofollow"><span class="rank">14</span><span><strong>Scie sabre 20 V</strong><span>Prix catalogue transmis: 49,99 EUR</span></span><span class="mini-button">Lidl</span></a>
+          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-aspirateur-souffleur-broyeur-electrique-pelsb-2600-a1/p100394586" rel="sponsored nofollow"><span class="rank">16</span><span><strong>Souffleur aspirateur electrique</strong><span>Prix catalogue transmis: 59,99 EUR</span></span><span class="mini-button">Lidl</span></a>
+          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-performance-debroussailleuse-sans-fil-2-en-1-ppafs-40-li-a1-40-v/p100398639" rel="sponsored nofollow"><span class="rank">17</span><span><strong>Debroussailleuse 40 V</strong><span>Prix catalogue transmis: 79,99 EUR</span></span><span class="mini-button">Lidl</span></a>
+          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-taille-haies-telescopique-sans-fil-pthsa-20-li-c4-20-v/p100386058" rel="sponsored nofollow"><span class="rank">20</span><span><strong>Taille-haies telescopique 20 V</strong><span>Prix catalogue transmis: 69,99 EUR</span></span><span class="mini-button">Lidl</span></a>
+          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-coupe-bordures-sans-fil-chargeur-batterie-20-v/p800012957" rel="sponsored nofollow"><span class="rank">22</span><span><strong>Coupe-bordures 20 V</strong><span>Prix catalogue transmis: 49,99 EUR</span></span><span class="mini-button">Lidl</span></a>
+          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-aspirateur-injecteur-extracteur-pws-20-f5/p100400138" rel="sponsored nofollow"><span class="rank">25</span><span><strong>Aspirateur injecteur extracteur</strong><span>Prix catalogue transmis: 89,99 EUR</span></span><span class="mini-button">Lidl</span></a>
+          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-scie-a-onglet-radiale-pzks-2000-c3-2000-w/p100388343" rel="sponsored nofollow"><span class="rank">34</span><span><strong>Scie a onglet radiale 2000 W</strong><span>Prix catalogue transmis: 199,99 EUR</span></span><span class="mini-button">Lidl</span></a>
+          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-batterie-chargeur-4-ah-20-v/p800011294" rel="sponsored nofollow"><span class="rank">37</span><span><strong>Batterie + chargeur 20 V 4 Ah</strong><span>Prix catalogue transmis: 34,99 EUR</span></span><span class="mini-button">Lidl</span></a>
+          <a class="ranked-item" href="https://www.lidl.fr/p/parkside-set-de-douilles-216-pieces/p100389184" rel="sponsored nofollow"><span class="rank">43</span><span><strong>Set de douilles 216 pieces</strong><span>Prix catalogue transmis: 34,99 EUR</span></span><span class="mini-button">Lidl</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="compliance" id="mentions-legales">
+      <div class="section-inner">
+        <p class="eyebrow">Informations légales</p>
+        <h2>Mentions légales et transparence publicitaire</h2>
+        <p>Cette page est un advertorial : un contenu publicitaire rédigé sous forme informative. Elle promeut des produits Parkside disponibles sur Lidl.fr. Les liens produits sont des liens commerciaux ; l'éditeur de la page peut percevoir une commission si un achat éligible est réalisé après un clic.</p>
+
+        <div class="compliance-grid">
+          <article class="legal-panel">
+            <h3>Éditeur et annonceur</h3>
+            <dl class="legal-data">
+              <div><dt>Raison sociale</dt><dd>OLYRA ADVERTISING LTD</dd></div>
+              <div><dt>Forme juridique</dt><dd>Private company limited by shares</dd></div>
+              <div><dt>Adresse</dt><dd>Office 17410, 182-184 High Street North, East Ham, London, United Kingdom, E6 2JA</dd></div>
+              <div><dt>Contact</dt><dd>info@olyraadvertising.shop | +44 7700 389049</dd></div>
+              <div><dt>Immatriculation</dt><dd>Companies House, England and Wales - Company No. 17066170</dd></div>
+              <div><dt>N. TVA / VAT</dt><dd class="required">À RENSEIGNER : le Company No. 17066170 n'est pas un numéro de TVA</dd></div>
+            </dl>
+          </article>
+
+          <article class="legal-panel">
+            <h3>Politique de la page</h3>
+            <ul class="policy-list">
+              <li><strong>Affiliation et indépendance</strong><p>Cette page est exploitée par l'annonceur identifié dans les mentions légales. Sauf indication expresse, elle n'est ni éditée ni approuvée par Lidl ou Parkside.</p></li>
+              <li><strong>Prix et disponibilité</strong><p>Les prix présentés sont indicatifs et peuvent évoluer. Le prix, le stock, la livraison, les retours et les conditions de vente applicables sont ceux affichés sur Lidl.fr avant commande.</p></li>
+              <li><strong>Données personnelles et cookies</strong><p>Cette page statique ne comporte ni formulaire, ni inscription, ni cookie déposé directement par son contenu. En quittant cette page pour Lidl.fr, les politiques et traceurs du site de destination peuvent s'appliquer.</p></li>
+              <li><strong>Propriété intellectuelle</strong><p>Les marques citées appartiennent à leurs titulaires respectifs et sont mentionnées uniquement pour identifier les produits présentés.</p></li>
+            </ul>
+          </article>
         </div>
       </div>
     </section>
@@ -473,7 +619,7 @@
           <p class="eyebrow">Ressource Lidl</p>
           <h2>Catalogue produits affilies</h2>
         </div>
-        <p>Tous les liens de cette page sont des liens catalogue Lidl avec attribut sponsored. Les doublons du fichier source ont ete conserves lorsque le catalogue pointait vers une variante ou une entree separee.</p>
+        <p>Les liens produits de cette page dirigent vers Lidl.fr et portent l'attribut sponsored. Les doublons du fichier source ont été conservés lorsqu'ils désignent une variante ou une entrée séparée.</p>
       </div>
 
       <div class="footer-grid" aria-label="Liste des liens catalogue Lidl">
@@ -529,7 +675,7 @@
         <a class="footer-link" href="https://www.lidl.fr/p/parkside-compresseur-et-pompe-a-air-sans-fil-pka-20-li-c3-20-v/p100398778" rel="sponsored nofollow"><strong>Compresseur et pompe a air 20V</strong><span>Compresseur/pompe - entree supplementaire</span></a>
       </div>
 
-      <p class="disclosure">Disclosure: cette page est une page advertorial statique. Les prix et disponibilites peuvent changer sur Lidl.fr. Verifiez toujours la fiche produit avant achat.</p>
+      <p class="disclosure">Publicité / Advertorial. Les liens produits sont commerciaux. Les prix et disponibilités peuvent changer sur Lidl.fr ; vérifiez toujours la fiche produit avant achat. Consultez les mentions légales ci-dessus pour identifier l'éditeur de la page.</p>
     </div>
   </footer>
 </body>
